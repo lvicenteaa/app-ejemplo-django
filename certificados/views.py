@@ -1,4 +1,5 @@
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 from django.db import IntegrityError
@@ -40,12 +41,15 @@ def signup(request):
         })
 
 
+@login_required
 def certificados(request):
-    certificados = Certificado.objects.filter(user=request.user, datecompleted__isnull=True)
+    certificados = Certificado.objects.filter(user=request.user)
     return render(request, 'certificados.html', {
         'certificados': certificados
     })
 
+
+@login_required
 def create_certificado(request):
     if request.method == 'GET':
         return render(request, 'created_certificado.html', {
@@ -64,6 +68,8 @@ def create_certificado(request):
                 'error': 'No hay datos'
             })
 
+
+@login_required
 def certificado_detalle(request, certificado_id):
     if request.method == 'GET':
         certificado = get_object_or_404(Certificado, pk=certificado_id, user=request.user)
@@ -85,6 +91,16 @@ def certificado_detalle(request, certificado_id):
                 'error': 'Error actualizando Certificado'
             })
 
+
+@login_required
+def delete_certificado(request, certificado_id):
+    certificado = get_object_or_404(Certificado, pk=certificado_id, user=request.user)
+    if request.method == 'POST':
+        certificado.delete()
+        return redirect('certificados')
+
+
+@login_required
 def signout(request):
     logout(request)
     return redirect('home')
