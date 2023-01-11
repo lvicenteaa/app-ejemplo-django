@@ -2,4 +2,14 @@
 
 {% block content %}
     <h1>Ver certificados</h1>
+    <ul>
+        {% for certificado in certificados %}
+            <li>
+                <h1>{{ certificado.title }} - <i>{{ certificado.user.username }}</i></h1>
+                <p>{{ certificado.description }}</p>
+                <p>{{ certificado.company }}</p>
+                <a href="{% url 'certificado_detalle' certificado.id %}"> Ver Certificado</a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

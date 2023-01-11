@@ -10,8 +10,9 @@
     <nav>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/certificados">Certificados</a></li>
             {% if user.is_authenticated %}
+                <li><a href="/certificados">Certificados</a></li>
+                <li><a href="/certificados/create">Crear Certificado</a></li>
                 <li><a href="/logout">Logout</a></li>
             {% else %}
                 <li><a href="/signup">Signup</a></li>
